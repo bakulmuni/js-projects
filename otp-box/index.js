@@ -1,6 +1,9 @@
 let generatedOTP;
+let intvId;
+
 
 const otpExpireElem = document.getElementById('otp-expires-id');
+const resultElem = document.getElementById("result-id");
 
 function expireOTP() {
 
@@ -9,15 +12,21 @@ function expireOTP() {
 
   let slice = totalTime / interval;
 
-  const intvId = setInterval(function() {
+   intvId = setInterval(function() {
     otpExpireElem.innerText = `OTP will expire in ${slice} seconds`;
     slice = slice - 1;
   }, interval);
 
   setTimeout(function() {
-    otpExpireElem.innerText = "OTP Expired";
-    clearInterval(intvId);
-    generateOTP();
+    
+    if(resultElem.classList.contains("success")){
+      clearInterval(intvId);
+    }else{
+      otpExpireElem.innerText = "OTP Expired";
+      clearInterval(intvId);
+      generateOTP();
+    }
+    
   }, totalTime);
 
 }
@@ -62,11 +71,12 @@ function validateOTP() {
   console.log(generatedOTP, typedNumber);
 
   const result = (generatedOTP === parseInt(typedNumber, 10));
-  const resultElem = document.getElementById("result-id");
+  //const resultElem = document.getElementById("result-id");
   if (result) {
     resultElem.innerText = "OTP has been validate successfully";
     resultElem.classList.remove("fail");
     resultElem.classList.add("success");
+    clearInterval(intvId);
   } else {
     resultElem.innerText = "OTP is Invalid";
     resultElem.classList.remove("success");
