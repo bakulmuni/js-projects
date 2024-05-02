@@ -19,14 +19,11 @@ function expireOTP() {
 
   setTimeout(function() {
     
-    if(resultElem.classList.contains("success")){
-      clearInterval(intvId);
-    }else{
+    if(!resultElem.classList.contains("success")){
       otpExpireElem.innerText = "OTP Expired";
       clearInterval(intvId);
       generateOTP();
     }
-    
   }, totalTime);
 
 }
